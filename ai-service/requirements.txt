@@ -1,0 +1,10 @@
+fastapi
+httpx
+openai
+protobuf
+pydantic
+pydantic_settings
+python-dotenv
+SQLAlchemy
+tenacity
+uvicorn
