@@ -259,6 +259,9 @@ const StudentDictionary = () => {
   const renderSentenceResult = (data) => (
     <div className="p-6 animate-fadeIn">
       <h3 className="text-lg font-bold text-gray-500 mb-2">Bản dịch</h3>
+      {data.furigana && (
+        <p className="text-lg text-gray-500 mb-1">{data.furigana}</p>
+      )}
       <p className="text-2xl text-gray-900 leading-relaxed">{data.translation}</p>
     </div>
   );

@@ -4,6 +4,7 @@ const FloatingTranslate = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [sourceText, setSourceText] = useState('');
   const [translatedText, setTranslatedText] = useState('');
+  const [furigana, setFurigana] = useState('');
   const [isTranslating, setIsTranslating] = useState(false);
 
   const handleTranslate = async () => {
@@ -29,19 +30,25 @@ const FloatingTranslate = () => {
       // If it's a word lookup (JSON object), show the translation field
       // If it's a sentence (simple string or object with translation), show that
       let result = '';
+      let furiganaResult = '';
+
       if (typeof data.translation === 'string') {
         // Check if it's a JSON string inside
         try {
           const parsed = JSON.parse(data.translation);
           result = parsed.translation || parsed.meaning || data.translation;
+          furiganaResult = parsed.furigana || data.furigana || '';
         } catch {
           result = data.translation;
+          furiganaResult = data.furigana || '';
         }
       } else if (typeof data === 'object') {
         result = data.translation || data.meaning || JSON.stringify(data);
+        furiganaResult = data.furigana || '';
       }
 
       setTranslatedText(result);
+      setFurigana(furiganaResult);
     } catch (error) {
       console.error('Translation error:', error);
       setTranslatedText('Lỗi dịch thuật. Vui lòng thử lại.');
@@ -56,6 +63,7 @@ const FloatingTranslate = () => {
       // Reset when collapsing
       setSourceText('');
       setTranslatedText('');
+      setFurigana('');
     }
   };
 
@@ -103,7 +111,7 @@ const FloatingTranslate = () => {
                   d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
                 />
               </svg>
-              <h3 className="font-semibold">Dịch thuật</h3>
+              <h3 className="font-semibold">翻訳</h3>
             </div>
             <button
               onClick={handleToggle}
@@ -131,12 +139,12 @@ const FloatingTranslate = () => {
             {/* Source Text Input */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Văn bản cần dịch
+                翻訳対象のテキスト
               </label>
               <textarea
                 value={sourceText}
                 onChange={(e) => setSourceText(e.target.value)}
-                placeholder="Nhập văn bản cần dịch..."
+                placeholder="翻訳対象のテキストを入力してください..."
                 className="w-full h-28 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm"
               />
             </div>
@@ -169,7 +177,7 @@ const FloatingTranslate = () => {
                       d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                     />
                   </svg>
-                  <span>Đang dịch...</span>
+                  <span>翻訳中...</span>
                 </>
               ) : (
                 <>
@@ -186,19 +194,25 @@ const FloatingTranslate = () => {
                       d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
                     />
                   </svg>
-                  <span>Dịch</span>
+                  <span>翻訳</span>
                 </>
               )}
             </button>
 
-            {/* Translated Text Output - Always visible */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Kết quả dịch
+                翻訳結果
               </label>
               <div className="w-full min-h-[7rem] px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm text-gray-800">
-                {translatedText || (
-                  <span className="text-gray-400">Bản dịch sẽ hiển thị ở đây...</span>
+                {translatedText ? (
+                  <div className="flex flex-col">
+                    {furigana && (
+                      <span className="text-xs text-gray-500 mb-1">{furigana}</span>
+                    )}
+                    <span>{translatedText}</span>
+                  </div>
+                ) : (
+                  <span className="text-gray-400">翻訳結果が表示されます...</span>
                 )}
               </div>
             </div>

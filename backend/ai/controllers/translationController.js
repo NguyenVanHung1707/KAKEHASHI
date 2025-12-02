@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 const API_KEY = process.env.GOOGLE_API_KEY;
 
 
@@ -56,7 +56,9 @@ export const translate = async (req, res) => {
         Rules:
         - If Input is Vietnamese -> Translate to Japanese (Polite/Natural).
         - If Input is Japanese -> Translate to VIETNAMESE.
-        - Output JSON: { "translation": "..." }
+        - Output JSON: 
+          - If Target is Japanese: { "translation": "...", "furigana": "..." } (furigana is the reading of the translation in Hiragana)
+          - If Target is Vietnamese: { "translation": "..." }
       `;
     }
     else if (inputType === 'JA_WORD') {

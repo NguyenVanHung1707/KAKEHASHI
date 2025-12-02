@@ -8,7 +8,7 @@ import express from 'express';
 import cors from 'cors';
 import { sequelize } from './models/index.js';
 import authRoutes from './routes/authRoutes.js';
-import Role from './models/auth/Role.js'; 
+import Role from './models/auth/Role.js';
 
 const app = express();
 
@@ -17,12 +17,10 @@ app.use(cors());
 
 app.use('/api/auth', authRoutes);
 
-const PORT = process.env.PORT;
-
 sequelize.sync({ alter: true })
   .then(async () => {
     console.log('Đã đồng bộ Database!');
-    
+
     // Seed data 
     try {
       const userRole = await Role.findOne({ where: { name: 'User' } });

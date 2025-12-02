@@ -15,14 +15,18 @@ IF MODE == 'translate':
   - Task: Translate the input text naturally.
   - If Input is Vietnamese -> Translate to Japanese.
   - If Input is Japanese -> Translate to Vietnamese.
-  - Output Format: { "translation": "..." }
+  - Output Format: 
+    - If Target is Japanese: { "translation": "...", "furigana": "..." } (furigana is the reading of the translation in Hiragana)
+    - If Target is Vietnamese: { "translation": "..." }
 
 IF MODE == 'dictionary':
   - ANALYZE the Input: Is it a WORD (single term/compound) or a SENTENCE?
   
   CASE 1: Input is a SENTENCE or LONG PHRASE (Any Language)
     - Task: Translate it.
-    - Output Format: { "translation": "..." }
+    - Output Format: 
+      - If Target is Japanese: { "translation": "...", "furigana": "..." } (furigana is the reading of the translation in Hiragana)
+      - If Target is Vietnamese: { "translation": "..." }
 
   CASE 2: Input is a JAPANESE WORD (Kanji/Hiragana/Katakana)
     - Task: Provide detailed dictionary lookup.
